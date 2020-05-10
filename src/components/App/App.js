@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
 import { Context } from '../../context';
 import CrossArea from '../CrossArea';
+import CrossTop from '../CrossTop/CrossTop';
 import './App.css';
 
 const Obj = {
   width: 10,
   height: 10,
   size: 18,
+  top: [
+    [{ count: 0, color: null }, { count: 2, color: null }, { count: 2, color: null }, { count: 2, color: null }],
+    [{ count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 3, color: null }],
+    [{ count: 0, color: null }, { count: 1, color: null }, { count: 2, color: null }, { count: 1, color: null }],
+    [{ count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 2, color: null }, { count: 4, color: null }, { count: 1, color: null }],
+    [{ count: 2, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 2, color: null }, { count: 3, color: null }, { count: 2, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 5, color: null }, { count: 4, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 66, color: null }],
+  ]
 }
 
-document.oncontextmenu = function (){return false};
+document.oncontextmenu = function () { return false };
 
 function App() {
 
-  function createArray (width, height){
+  function createArray(width, height) {
 
     const arr = []
-    for(let i = 0; i < height; i++){
+    for (let i = 0; i < height; i++) {
       arr[i] = []
-      for(let k = 0; k < width; k++){
-        arr[i][k] = {key: (i+1) + '-' + (k+1), color: false, cross: false}
+      for (let k = 0; k < width; k++) {
+        arr[i][k] = { key: (i + 1) + '-' + (k + 1), color: false, cross: false }
       }
     }
     return arr
@@ -35,15 +48,15 @@ function App() {
     const but = event.button
     setCross(cross.map(row => {
       return row.map(el => {
-        if(el.key === key ){
-          if(but === 0){
+        if (el.key === key) {
+          if (but === 0) {
             el.color = !el.color ? color : false
             el.cross = false
-            setButton([!el.color ? 'none' : 'color' , false])
-          } else if ( but === 2) {
+            setButton([!el.color ? 'none' : 'color', false])
+          } else if (but === 2) {
             el.cross = !el.cross
             el.color = false
-            setButton([false, true])
+            setButton([false, !el.cross ? 'none' : 'cross'])
           }
         }
         return el
@@ -52,36 +65,46 @@ function App() {
   }
 
   const mouseOverEvent = (key) => {
-      if(button[0] || button[1]){
-        setCross(cross.map(row => {
-          return row.map(el => {
-            if(el.key === key ){
-              if(button[0]){
-                if (button[0] === 'color') {
-                  el.color = color
-                } else {
-                  el.color = false
-                }
-                el.cross = false
-              } else if ( button[1]) {
-                el.cross = !el.cross
+    if (button[0] || button[1]) {
+      setCross(cross.map(row => {
+        return row.map(el => {
+          if (el.key === key) {
+            if (button[0]) {
+              if (button[0] === 'color') {
+                el.color = color
+              } else {
                 el.color = false
               }
+              el.cross = false
+            } else if (button[1]) {
+              if (button[1] === 'cross') {
+                el.cross = true
+              } else {
+                el.cross = false
+              }
+              el.color = false
             }
-            return el
-          })
-        }))
-      }
+          }
+          return el
+        })
+      }))
+    }
   }
 
   const mouseUpEvent = () => {
     setButton([false, false])
   }
 
+  const style = {
+    width: Obj.width * size + Obj.width - 1 + Math.ceil(Obj.width / 5) - 1,
+    height: Obj.height * size + Obj.height - 1 + Math.ceil(Obj.height / 5) - 1,
+  }
+
   return (
-    <Context.Provider value={{mouseDownEvent, mouseOverEvent, mouseUpEvent}}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent }}>
       <div className="App">
-        <CrossArea width={Obj.width} height={Obj.height} size={size} cross={cross}/>
+        <CrossTop top={Obj.top} size={size} style={style} />
+        <CrossArea size={size} cross={cross} style={style} />
       </div>
     </Context.Provider>
   );

@@ -12,6 +12,35 @@ body {
     flex-direction: column;
 }
 
+.cross-top-body {
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border: 2px solid #000;
+    border-bottom: none;
+}
+
+.cross-top-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    border-right: 1px solid #818181;
+}
+
+.cross-top-row:nth-child(5n) {
+    border-right: 2px solid #818181;
+}
+
+.cross-top-row:last-child {
+    border-right: none;
+}
+
+.cross-top-elem {
+    border-bottom: 1px solid #818181;
+}
+
 .cross-row {
     display: flex;
     border-bottom: 1px solid #8f8f8f;
