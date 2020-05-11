@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import md5 from 'md5'
 import { Context } from '../context';
 import CrossArea from './CrossArea';
 import CrossTop from './CrossTop';
@@ -7,32 +8,24 @@ import CrossLabel from './CrossLabel';
 import './App.css';
 
 const Obj = {
-  width: 10,
-  height: 10,
+  ans: '147372394546a61642cd2be769ef81fe',
+  width: 5,
+  height: 5,
   size: 18,
+  colors: [{ 'id': 1, color: '#000000' }],
   top: [
-    [{ count: 0, color: null }, { count: 2, color: null }, { count: 2, color: null }, { count: 2, color: null }],
-    [{ count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 3, color: null }],
-    [{ count: 0, color: null }, { count: 1, color: null }, { count: 2, color: null }, { count: 1, color: null }],
-    [{ count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
-    [{ count: 0, color: null }, { count: 2, color: null }, { count: 4, color: null }, { count: 1, color: null }],
-    [{ count: 2, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
-    [{ count: 0, color: null }, { count: 2, color: null }, { count: 3, color: null }, { count: 2, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 5, color: null }, { count: 4, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 10, color: null }],
+    [{ count: 1, color: null }],
+    [{ count: 4, color: null }],
+    [{ count: 4, color: null }],
+    [{ count: 4, color: null }],
+    [{ count: 2, color: null }],
   ],
   left: [
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 7, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 1, color: null }, { count: 5, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 10, color: null }],
-    [{ count: 1, color: null }, { count: 2, color: null }, { count: 1, color: null }, { count: 3, color: null }],
-    [{ count: 0, color: null }, { count: 2, color: null }, { count: 3, color: null }, { count: 1, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 2, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }],
-    [{ count: 0, color: null }, { count: 1, color: null }, { count: 3, color: null }, { count: 3, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 4, color: null }],
+    [{ count: 1, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 5, color: null }],
+    [{ count: 0, color: null }, { count: 5, color: null }],
+    [{ count: 0, color: null }, { count: 3, color: null }],
+    [{ count: 0, color: null }, { count: 1, color: null }],
   ],
 }
 
@@ -54,7 +47,7 @@ function App() {
 
   const [size, setSize] = useState(Obj.size);
   const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
-  const [color, setColor] = useState('#000000')
+  const [color, setColor] = useState(Obj.colors[0].color)
   const [button, setButton] = useState([false, false])
 
   const mouseDownEvent = (event, key) => {
@@ -76,6 +69,7 @@ function App() {
         return el
       })
     }))
+    checkAns();
   }
 
   const mouseOverEvent = (key) => {
@@ -102,7 +96,24 @@ function App() {
           return el
         })
       }))
+      checkAns();
     }
+  }
+
+  const checkAns = () => {
+    let string = '';
+    for (let i = 0; i < Obj.height; i++) {
+      for (let k = 0; k < Obj.width; k++) {
+        if (cross[i][k].color === false) {
+          string += '0';
+        } else {
+          let id = Obj.colors.filter(el => el.color === cross[i][k].color)
+          string += (id[0].id + '');
+        }
+      }
+    }
+    if (md5(string) === Obj.ans) console.log('Кроссворд решен');
+
   }
 
   const mouseUpEvent = () => {
@@ -123,7 +134,7 @@ function App() {
         </div>
 
         <div className="cross-row-1">
-          <CrossLeft left={Obj.left} size={size}/>
+          <CrossLeft left={Obj.left} size={size} />
           <CrossArea size={size} cross={cross} style={style} />
         </div>
       </div>
