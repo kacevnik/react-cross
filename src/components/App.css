@@ -4,6 +4,10 @@ body {
     -khtml-user-select: none;
     user-select: none;
 }
+
+.cross-row-1 {
+    display: flex;
+}
 .cross-area {
     border: 2px solid #000;
     background: #fff;
@@ -12,7 +16,7 @@ body {
     flex-direction: column;
 }
 
-.cross-top-body {
+.cross-top {
     background-color: #fff;
     display: flex;
     flex-wrap: wrap;
@@ -41,6 +45,10 @@ body {
     border-bottom: 1px solid #818181;
 }
 
+.cross-top-elem:last-child {
+    border-bottom: none
+}
+
 .cross-row {
     display: flex;
     border-bottom: 1px solid #8f8f8f;
@@ -65,4 +73,40 @@ body {
 
 .cross-elem:last-child {
     border-right: none;
+}
+
+.cross-left {
+    border: 2px solid #000;
+    border-right: none;
+}
+
+.cross-left-row {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #818181;
+    background-color: #fff;
+}
+
+.cross-left-row:nth-child(5n) {
+    border-bottom: 2px solid #818181;
+}
+
+.cross-left-row:last-child {
+    border-bottom: none;
+}
+
+.cross-left-elem{
+    border-right: 1px solid #818181;
+    text-align: center;
+}
+
+.cross-left-elem:last-child{
+    border-right: none;
+}
+
+.cross-label {
+    border: 2px solid #000;
+    border-right: none;
+    border-bottom: none;
+    background-color: #f1f1f1;
 }

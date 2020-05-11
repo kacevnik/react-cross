@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Context } from '../../context';
-import SvgCross from '../SvgCross'
+import { Context } from '../context';
+import SvgCross from './SvgCross'
 
 function CrossArea({ size, cross, style }) {
 

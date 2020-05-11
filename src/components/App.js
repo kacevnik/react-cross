@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Context } from '../../context';
-import CrossArea from '../CrossArea';
-import CrossTop from '../CrossTop/CrossTop';
+import { Context } from '../context';
+import CrossArea from './CrossArea';
+import CrossTop from './CrossTop';
+import CrossLeft from './CrossLeft';
+import CrossLabel from './CrossLabel';
 import './App.css';
 
 const Obj = {
@@ -18,8 +20,20 @@ const Obj = {
     [{ count: 2, color: null }, { count: 1, color: null }, { count: 1, color: null }, { count: 1, color: null }],
     [{ count: 0, color: null }, { count: 2, color: null }, { count: 3, color: null }, { count: 2, color: null }],
     [{ count: 0, color: null }, { count: 0, color: null }, { count: 5, color: null }, { count: 4, color: null }],
-    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 66, color: null }],
-  ]
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 10, color: null }],
+  ],
+  left: [
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 7, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 1, color: null }, { count: 5, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 10, color: null }],
+    [{ count: 1, color: null }, { count: 2, color: null }, { count: 1, color: null }, { count: 3, color: null }],
+    [{ count: 0, color: null }, { count: 2, color: null }, { count: 3, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 2, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }],
+    [{ count: 0, color: null }, { count: 1, color: null }, { count: 3, color: null }, { count: 3, color: null }],
+    [{ count: 0, color: null }, { count: 0, color: null }, { count: 2, color: null }, { count: 4, color: null }],
+  ],
 }
 
 document.oncontextmenu = function () { return false };
@@ -103,8 +117,15 @@ function App() {
   return (
     <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent }}>
       <div className="App">
-        <CrossTop top={Obj.top} size={size} style={style} />
-        <CrossArea size={size} cross={cross} style={style} />
+        <div className="cross-row-1">
+          <CrossLabel size={size} left={Obj.left[0].length} />
+          <CrossTop top={Obj.top} size={size} style={style} />
+        </div>
+
+        <div className="cross-row-1">
+          <CrossLeft left={Obj.left} size={size}/>
+          <CrossArea size={size} cross={cross} style={style} />
+        </div>
       </div>
     </Context.Provider>
   );

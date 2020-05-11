@@ -34,11 +34,8 @@ function CrossTop({ top, size, style }) {
     })
 
     return (
-        <div className="cross-top">
-            <div></div>
-            <div className="cross-top-body" style={Style}>
-                {elements}
-            </div>
+        <div className="cross-top" style={Style}>
+            {elements}
         </div>
     )
 }
