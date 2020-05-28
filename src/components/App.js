@@ -5,6 +5,7 @@ import CrossArea from './CrossArea';
 import CrossTop from './CrossTop';
 import CrossLeft from './CrossLeft';
 import CrossLabel from './CrossLabel';
+import SelectColors from './SelectColors';
 import './App.css';
 
 const Obj = {
@@ -12,20 +13,20 @@ const Obj = {
   width: 5,
   height: 5,
   size: 18,
-  colors: [{ 'id': 1, color: '#000000' }],
+  colors: [{ 'id': 1, color: '#3d65bf' },{ 'id': 2, color: '#f79999' }],
   top: [
-    [{ count: 1, color: null }],
-    [{ count: 4, color: null }],
-    [{ count: 4, color: null }],
-    [{ count: 4, color: null }],
-    [{ count: 2, color: null }],
+    [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
+    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
+    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
+    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
+    [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
   ],
   left: [
-    [{ count: 1, color: null }, { count: 1, color: null }],
-    [{ count: 0, color: null }, { count: 5, color: null }],
-    [{ count: 0, color: null }, { count: 5, color: null }],
-    [{ count: 0, color: null }, { count: 3, color: null }],
-    [{ count: 0, color: null }, { count: 1, color: null }],
+    [{ count: 0, color: null }, { count: 5, color: 1 }],
+    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
+    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
+    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
+    [{ count: 0, color: null }, { count: 5, color: 1 }],
   ],
 }
 
@@ -47,7 +48,7 @@ function App() {
 
   const [size, setSize] = useState(Obj.size);
   const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
-  const [color, setColor] = useState(Obj.colors[0].color)
+  const [color, setColor] = useState(Obj.colors[0])
   const [button, setButton] = useState([false, false])
 
   const mouseDownEvent = (event, key) => {
@@ -57,7 +58,11 @@ function App() {
       return row.map(el => {
         if (el.key === key) {
           if (but === 0) {
-            el.color = !el.color ? color : false
+            if (!el.color ) {
+              el.color = color.color
+            } else {
+              el.color = el.color !== color.color ? color.color : false
+            }
             el.cross = false
             setButton([!el.color ? 'none' : 'color', false])
           } else if (but === 2) {
@@ -79,7 +84,7 @@ function App() {
           if (el.key === key) {
             if (button[0]) {
               if (button[0] === 'color') {
-                el.color = color
+                el.color = color.color
               } else {
                 el.color = false
               }
@@ -116,6 +121,10 @@ function App() {
 
   }
 
+  const changeColor = (id) => {
+    setColor(Obj.colors.filter(el => el.id === id)[0])
+  }
+
   const mouseUpEvent = () => {
     setButton([false, false])
   }
@@ -125,16 +134,35 @@ function App() {
     height: Obj.height * size + Obj.height - 1 + Math.ceil(Obj.height / 5) - 1,
   }
 
+  const getCorrectTextColor = hex => {
+  
+    let threshold = 130;
+    
+    let hRed = hexToR(hex);
+    let hGreen = hexToG(hex);
+    let hBlue = hexToB(hex);
+    
+    
+    function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+    function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+    function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+    function cutHex(h) {return (h.charAt(0)==="#") ? h.substring(1,7):h}
+  
+    const cBrightness = ((hRed * 299) + (hGreen * 587) + (hBlue * 114)) / 1000;
+      if (cBrightness > threshold){return "#000000";} else { return "#ffffff";}	
+  }
+
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor }}>
       <div className="App">
+        <SelectColors colors={Obj.colors} color={color}/>
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />
-          <CrossTop top={Obj.top} size={size} style={style} />
+          <CrossTop top={Obj.top} size={size} style={style} colors={Obj.colors} contrast={getCorrectTextColor} />
         </div>
 
         <div className="cross-row-1">
-          <CrossLeft left={Obj.left} size={size} />
+          <CrossLeft left={Obj.left} size={size} colors={Obj.colors} contrast={getCorrectTextColor} />
           <CrossArea size={size} cross={cross} style={style} />
         </div>
       </div>

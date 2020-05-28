@@ -1,8 +1,11 @@
 body {
-    background: #e7e7e7;
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
+}
+
+.App {
+    padding: 30px;
 }
 
 .cross-row-1 {
@@ -109,4 +112,45 @@ body {
     border-right: none;
     border-bottom: none;
     background-color: #f1f1f1;
+}
+
+.select-colors {
+    display: flex;
+}
+
+.select-color-elements {
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin: 0 15px 20px 0;
+    border: 1px solid #fff;
+    outline: 2px solid #000;
+    transition: all 0.3s ease;
+}
+
+.select-color-elements.color-now {
+    transform: scale(1.2);
+}
+
+.select-color-elements.color-now:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 25%;
+    background: rgba(255, 255, 255, 0.6);
+    top: 0;
+    left: 0;
+    transform: translateX(-220%)  skewX(-30deg);
+    animation: stars 0.3s ease-in-out;
+}
+
+@keyframes stars {
+    0%{
+        transform: translateX(-220%)  skewX(-30deg);
+    }
+    100% {
+        transform: translateX(700%)  skewX(-30deg);
+    }
 }
