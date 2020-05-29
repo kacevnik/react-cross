@@ -6,13 +6,14 @@ import CrossTop from './CrossTop';
 import CrossLeft from './CrossLeft';
 import CrossLabel from './CrossLabel';
 import SelectColors from './SelectColors';
+import NonoButtons from './NonoButtons';
 import './App.css';
 
 const Obj = {
   ans: '147372394546a61642cd2be769ef81fe',
   width: 5,
   height: 5,
-  size: 22,
+  size: 18,
   colors: [{ 'id': 1, color: '#3d65bf' },{ 'id': 2, color: '#f79999' }],
   top: [
     [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
@@ -167,9 +168,22 @@ function App() {
       if (cBrightness > threshold){return "#000000";} else { return "#ffffff";}	
   }
 
+  const onSize = (event) => {
+    let newSize = size;
+    if(event === 'minus' && size > 14) {
+      newSize = size - 2;
+      setSize(newSize)
+    }
+    if(event === 'plus' && size < 28) {
+      newSize = size + 2;
+      setSize(newSize)
+    }
+  }
+
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize }}>
       <div className="App">
+        <NonoButtons size={size} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />

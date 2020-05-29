@@ -24,6 +24,7 @@ function CrossTop({ colors, top, size, style, contrast }) {
                         let customColor = el.color ? colors.filter(c => c.id === el.color)[0].color : '#CACACA';
                         const styleElem = {
                             height: size,
+                            width: size,
                             fontSize: size - 6,
                             lineHeight: size + 1 + 'px',
                             backgroundColor: el.count ? customColor : defaulColor,

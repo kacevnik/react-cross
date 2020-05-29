@@ -17,6 +17,7 @@ function CrossArea({ size, cross, style }) {
                 {row.map(el => {
                     const styleElem = {
                         width: size,
+                        height: size,
                         backgroundColor: !el.color ? 'transparent' : el.color
                     }
                     return (
