@@ -46,6 +46,7 @@ body {
 
 .cross-top-elem {
     border-bottom: 1px solid #818181;
+    position: relative;
 }
 
 .cross-top-elem:last-child {
@@ -101,6 +102,7 @@ body {
 .cross-left-elem{
     border-right: 1px solid #818181;
     text-align: center;
+    position: relative;
 }
 
 .cross-left-elem:last-child{
@@ -153,4 +155,15 @@ body {
     100% {
         transform: translateX(700%)  skewX(-30deg);
     }
+}
+
+.cross-top-elem-more:after, .cross-left-elem-more:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.3;
 }

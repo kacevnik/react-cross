@@ -12,7 +12,7 @@ const Obj = {
   ans: '147372394546a61642cd2be769ef81fe',
   width: 5,
   height: 5,
-  size: 18,
+  size: 22,
   colors: [{ 'id': 1, color: '#3d65bf' },{ 'id': 2, color: '#f79999' }],
   top: [
     [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
@@ -50,6 +50,8 @@ function App() {
   const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
   const [color, setColor] = useState(Obj.colors[0])
   const [button, setButton] = useState([false, false])
+  const [top, setTop] = useState({data:Obj.top, line: 0})
+  const [left, setLeft] = useState({data:Obj.left, line: 0})
 
   const mouseDownEvent = (event, key) => {
 
@@ -103,6 +105,13 @@ function App() {
       }))
       checkAns();
     }
+    showHintLines(key);
+  }
+
+  const showHintLines = (key) => {
+    const cors = key.split('-')
+    setTop({data: top.data, line: cors[1] * 1})
+    setLeft({data: left.data, line: cors[0] * 1})
   }
 
   const checkAns = () => {
@@ -129,6 +138,12 @@ function App() {
     setButton([false, false])
   }
 
+  const mouseLeaveEvent = () => {
+    mouseUpEvent()
+    setTop({data: top.data, line: 0})
+    setLeft({data: left.data, line: 0})
+  }
+
   const style = {
     width: Obj.width * size + Obj.width - 1 + Math.ceil(Obj.width / 5) - 1,
     height: Obj.height * size + Obj.height - 1 + Math.ceil(Obj.height / 5) - 1,
@@ -153,16 +168,16 @@ function App() {
   }
 
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent }}>
       <div className="App">
-        <SelectColors colors={Obj.colors} color={color}/>
+        {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />
-          <CrossTop top={Obj.top} size={size} style={style} colors={Obj.colors} contrast={getCorrectTextColor} />
+          <CrossTop top={top} size={size} style={style} colors={Obj.colors} contrast={getCorrectTextColor} />
         </div>
 
         <div className="cross-row-1">
-          <CrossLeft left={Obj.left} size={size} colors={Obj.colors} contrast={getCorrectTextColor} />
+          <CrossLeft left={left} size={size} colors={Obj.colors} contrast={getCorrectTextColor} />
           <CrossArea size={size} cross={cross} style={style} />
         </div>
       </div>

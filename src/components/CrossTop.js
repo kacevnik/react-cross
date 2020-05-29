@@ -9,7 +9,7 @@ function CrossTop({ colors, top, size, style, contrast }) {
     let keyRow = 0;
     const defaulColor = colors.length > 1 ? '#cecece' : 'transparent'
 
-    const elements = top.map(row => {
+    const elements = top.data.map(row => {
         const styleRow = {
             width: size,
         }
@@ -17,16 +17,20 @@ function CrossTop({ colors, top, size, style, contrast }) {
             <div key={keyRow++} className="cross-top-row" style={styleRow}>
                 {
                     row.map(el => {
+                        let clx = ['cross-top-elem']
+                        if (top.line !== 0 && top.line !== keyRow) {
+                            clx.push('cross-top-elem-more')
+                        }
                         let customColor = el.color ? colors.filter(c => c.id === el.color)[0].color : '#CACACA';
                         const styleElem = {
                             height: size,
                             fontSize: size - 6,
                             lineHeight: size + 1 + 'px',
                             backgroundColor: el.count ? customColor : defaulColor,
-                            color: contrast(customColor)
+                            color: contrast(customColor),
                         }
                         return (
-                            <div key={key++} className="cross-top-elem" style={styleElem}>
+                            <div key={key++} className={clx.join(' ')} style={styleElem}>
                                 {el.count ? el.count : ''}
                             </div>
                         )

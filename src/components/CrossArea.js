@@ -4,7 +4,7 @@ import SvgCross from './SvgCross'
 
 function CrossArea({ size, cross, style }) {
 
-    const { mouseDownEvent, mouseOverEvent, mouseUpEvent } = useContext(Context);
+    const { mouseDownEvent, mouseOverEvent, mouseUpEvent, mouseLeaveEvent } = useContext(Context);
 
     let keyRow = 0;
 
@@ -36,7 +36,7 @@ function CrossArea({ size, cross, style }) {
     })
 
     return (
-        <div className="cross-area" style={style} onMouseLeave={() => mouseUpEvent()}>
+        <div className="cross-area" style={style} onMouseLeave={() => mouseLeaveEvent()}>
             {elements}
         </div>
     );

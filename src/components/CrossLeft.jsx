@@ -4,10 +4,15 @@ function CrossLeft({left, size, colors, contrast}) {
     let key = 0
     let keyRow = 0
     const defaulColor = colors.length > 1 ? '#cecece' : 'transparent'
-    const elements = left.map(row => {
+    const elements = left.data.map(row => {
         return(
             <div key={keyRow++} className="cross-left-row">
                 {row.map(el => {
+                    let clx = ['cross-left-elem']
+                    if (left.line !== 0 && left.line !== keyRow) {
+                        clx.push('cross-left-elem-more')
+                    }
+
                     let customColor = el.color ? colors.filter(c => c.id === el.color)[0].color : '#CACACA';
                     let styleElem = {
                         width: size,
@@ -18,7 +23,7 @@ function CrossLeft({left, size, colors, contrast}) {
                         color: contrast(customColor),
                     }
                     return(
-                        <div key={key++} className="cross-left-elem" style={styleElem}>{el.count ? el.count : ''}</div>
+                        <div key={key++} className={clx.join(' ')} style={styleElem}>{el.count ? el.count : ''}</div>
                     )
                 })}
             </div>
