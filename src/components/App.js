@@ -35,6 +35,8 @@ document.oncontextmenu = function () { return false };
 
 function App() {
 
+  const $ = window.jQuery
+
   function createArray(width, height) {
 
     const arr = []
@@ -180,8 +182,12 @@ function App() {
     }
   }
 
+  const onClearCross = () => {
+    setCross(createArray(Obj.width, Obj.height))
+  }
+
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross }}>
       <div className="App">
         <NonoButtons size={size} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
