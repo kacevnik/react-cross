@@ -10,25 +10,13 @@ import NonoButtons from './NonoButtons';
 import './App.css';
 
 const Obj = {
-  ans: '147372394546a61642cd2be769ef81fe',
-  width: 5,
-  height: 5,
+  ans: 'e63ed09bb2efaeec5afb24490353c463',
+  width: 10,
+  height: 10,
   size: 18,
-  colors: [{ 'id': 1, color: '#3d65bf' },{ 'id': 2, color: '#f79999' }],
-  top: [
-    [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
-    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
-    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
-    [{ count: 0, color: null }, { count: 1, color: 1 }, { count: 1, color: 1 }],
-    [{ count: 1, color: 1 }, { count: 3, color: 2 }, { count: 1, color: 1 }],
-  ],
-  left: [
-    [{ count: 0, color: null }, { count: 5, color: 1 }],
-    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
-    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
-    [{ count: 1, color: 2 }, { count: 1, color: 2 }],
-    [{ count: 0, color: null }, { count: 5, color: 1 }],
-  ],
+  colors: [{"id":1,"color":"#000000"}],
+  top: [[{"count":0,"color":null},{"count":0,"color":null},{"count":"2","color":null},{"count":"3","color":null}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"4","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"3","color":1},{"count":"1","color":1},{"count":"4","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"4","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"3","color":1},{"count":"1","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"3","color":1},{"count":"3","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"3","color":1}]],
+  left: [[{"count":0,"color":1},{"count":0,"color":1},{"count":"3","color":1},{"count":"3","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"5","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"2","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"5","color":1},{"count":"2","color":1}],[{"count":"1","color":1},{"count":"2","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"6","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"4","color":1},{"count":"1","color":1},{"count":"1","color":1}]],
 }
 
 document.oncontextmenu = function () { return false };
@@ -36,6 +24,7 @@ document.oncontextmenu = function () { return false };
 function App() {
 
   const $ = window.jQuery
+  // const Obj = window.Obj.data
 
   function createArray(width, height) {
 
