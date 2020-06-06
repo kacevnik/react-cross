@@ -4,10 +4,6 @@ body {
     user-select: none;
 }
 
-.App {
-    padding: 30px;
-}
-
 .cross-row-1 {
     display: flex;
     box-sizing: content-box;

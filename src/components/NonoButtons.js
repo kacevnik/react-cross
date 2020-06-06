@@ -3,6 +3,10 @@ import { Context } from '../context';
 
 function NonoButtons({size}){
     const { onSize, onClearCross } = useContext(Context);
+
+    const showCrossImg = () => {
+        document.getElementById("nonogramsImageShow").click();
+    }
     return(
         <div className="nono-buttons">
             <div className="nono-buttons-item">
@@ -21,7 +25,7 @@ function NonoButtons({size}){
                 <span>Сохранить</span>
             </div>
             <div className="nono-buttons-item">
-                <span>Ответ</span>
+                <span onClick={showCrossImg}>Ответ</span>
             </div>
         </div>
     )

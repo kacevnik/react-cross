@@ -9,22 +9,13 @@ import SelectColors from './SelectColors';
 import NonoButtons from './NonoButtons';
 import './App.css';
 
-const Obj = {
-  ans: 'e63ed09bb2efaeec5afb24490353c463',
-  width: 10,
-  height: 10,
-  size: 18,
-  colors: [{"id":1,"color":"#000000"}],
-  top: [[{"count":0,"color":null},{"count":0,"color":null},{"count":"2","color":null},{"count":"3","color":null}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"4","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"3","color":1},{"count":"1","color":1},{"count":"4","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"4","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"3","color":1},{"count":"1","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"3","color":1},{"count":"3","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"3","color":1}]],
-  left: [[{"count":0,"color":1},{"count":0,"color":1},{"count":"3","color":1},{"count":"3","color":1}],[{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"1","color":1},{"count":"5","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"2","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":0,"color":1},{"count":"5","color":1},{"count":"2","color":1}],[{"count":"1","color":1},{"count":"2","color":1},{"count":"1","color":1},{"count":"2","color":1}],[{"count":0,"color":1},{"count":"6","color":1},{"count":"1","color":1},{"count":"1","color":1}],[{"count":0,"color":1},{"count":"4","color":1},{"count":"1","color":1},{"count":"1","color":1}]],
-}
-
 document.oncontextmenu = function () { return false };
 
 function App() {
 
   const $ = window.jQuery
-  // const Obj = window.Obj.data
+  const Obj = window.Obj2.data
+  // const Obj = window.Obj2.data
 
   function createArray(width, height) {
 
