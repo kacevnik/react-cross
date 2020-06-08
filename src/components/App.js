@@ -15,7 +15,6 @@ function App() {
 
   const $ = window.jQuery
   const Obj = window.Obj2.data
-  // const Obj = window.Obj2.data
 
   function createArray(width, height) {
 
@@ -29,12 +28,54 @@ function App() {
     return arr
   }
 
+  function getString(arr){
+    var count1 = 0
+    var count2 = 0
+    var count3 = 0
+    let prev = ''
+    let str = ''
+    let el  = ''
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        if ( arr[i][j].color ) {
+          el = Obj.colors.filter(el => el.color === arr[i][j].color )[0].id
+        } else {
+          if ( arr[i][j].cross) {
+            el = '10'
+          } else {
+            el = '0'
+          }
+        }
+        
+        if (prev === el){
+          count++
+        } else {
+          prev = el
+          str = str + count + ':' + el + ','
+        }
+        
+
+  
+      }
+    }
+    return str
+  }
+
+  function getHistory(){
+    if(Obj.history.length > 0){
+      return Obj.history
+    } else {
+      return [getString(createArray(Obj.width, Obj.height))]
+    }
+  }
+
   const [size, setSize] = useState(Obj.size);
-  const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
   const [color, setColor] = useState(Obj.colors[0])
   const [button, setButton] = useState([false, false])
   const [top, setTop] = useState({data:Obj.top, line: 0})
   const [left, setLeft] = useState({data:Obj.left, line: 0})
+  const [history, setHistory] = useState(getHistory())
+  const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
 
   const mouseDownEvent = (event, key) => {
 
@@ -109,6 +150,7 @@ function App() {
         }
       }
     }
+
     if (md5(string) === Obj.ans) console.log('Кроссворд решен');
 
   }
@@ -118,11 +160,16 @@ function App() {
   }
 
   const mouseUpEvent = () => {
+    //setHistory([...history, cross])
     setButton([false, false])
   }
 
   const mouseLeaveEvent = () => {
-    mouseUpEvent()
+    if(button[0] || button[1]){
+      //setHistory([...history, cross])
+    }
+    setButton([false, false])
+
     setTop({data: top.data, line: 0})
     setLeft({data: left.data, line: 0})
   }
@@ -166,10 +213,22 @@ function App() {
     setCross(createArray(Obj.width, Obj.height))
   }
 
+  const stepBackHistory = () => {
+    // let his = history
+    // his.pop()
+    //setHistory(his)
+    //setCross(his[his.length - 1])
+    // console.log(history)
+  }
+
+  const showCrossImg2 = () => {
+    setHistory([...history, getString(cross)])
+  }
+
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory, showCrossImg2 }}>
       <div className="App">
-        <NonoButtons size={size} />
+        <NonoButtons size={size} history={Obj.history} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />

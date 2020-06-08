@@ -1,8 +1,10 @@
 import React, {useContext} from 'react'
 import { Context } from '../context';
 
-function NonoButtons({size}){
-    const { onSize, onClearCross } = useContext(Context);
+function NonoButtons({size, history}){
+    const { onSize, onClearCross, stepBackHistory, showCrossImg2 } = useContext(Context);
+
+    const count = history.length <= 1 ? '' : '(' + (history.length - 1) + ')'
 
     const showCrossImg = () => {
         document.getElementById("nonogramsImageShow").click();
@@ -19,10 +21,10 @@ function NonoButtons({size}){
                 <span onClick={onClearCross}>Очистить</span>
             </div>
             <div className="nono-buttons-item">
-                <span>Отменить</span>
+                <span onClick={()=>stepBackHistory()}>Отменить {count}</span>
             </div>
             <div className="nono-buttons-item">
-                <span>Сохранить</span>
+                <span onClick={showCrossImg2}>Сохранить</span>
             </div>
             <div className="nono-buttons-item">
                 <span onClick={showCrossImg}>Ответ</span>
