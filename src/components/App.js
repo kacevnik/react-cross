@@ -242,7 +242,10 @@ console.log(res)
   }
 
   const onClearCross = () => {
-    setCross(createArray(Obj.width, Obj.height))
+    if(history.length > 1) {
+      setHistory([...history, getString(createArray(Obj.width, Obj.height))])
+      setCross(createArray(Obj.width, Obj.height))
+    }
   }
 
   const stepBackHistory = () => {
