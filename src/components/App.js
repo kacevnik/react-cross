@@ -14,7 +14,7 @@ document.oncontextmenu = function () { return false };
 function App() {
 
   const $ = window.jQuery
-  const Obj = window.Obj2.data
+  const Obj = window.Obj.data
 
   function createArray(width, height) {
 
@@ -29,36 +29,68 @@ function App() {
   }
 
   function getString(arr){
-    var count1 = 0
-    var count2 = 0
-    var count3 = 0
-    let prev = ''
+    var count = 0
+    let dataArr
     let str = ''
-    let el  = ''
+    let result = ''
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr[i].length; j++) {
         if ( arr[i][j].color ) {
-          el = Obj.colors.filter(el => el.color === arr[i][j].color )[0].id
+          str += Obj.colors.filter(el => el.color === arr[i][j].color )[0].id
         } else {
           if ( arr[i][j].cross) {
-            el = '10'
+            str += '9'
           } else {
-            el = '0'
+            str += '0'
           }
         }
-        
-        if (prev === el){
-          count++
-        } else {
-          prev = el
-          str = str + count + ':' + el + ','
-        }
-        
 
-  
       }
     }
-    return str
+
+    dataArr = str.split('');
+    for ( let k = 0; k < dataArr.length; k++) {
+      count++
+      if(dataArr[k] !== dataArr[k + 1]) {
+        let sep = result ? ',' : ''
+        result += sep + dataArr[k] + ':' + count
+        count = 0
+      }
+    }
+    return result
+  }
+
+  function getArrFromString(string) {
+    let str = ''
+    const arr = string.split(',')
+    for (let i = 0; i < arr.length; i++){
+      let item = arr[i].split(':')
+      for (let k = 0; k < item[1]; k++){
+        str += item[0]
+      }
+    }
+    const strArr = str.split('')
+    const res = []
+
+    for (let i = 0; i < Obj.height; i++) {
+      res[i] = []
+      for (let k = 0; k < Obj.width; k++) {
+        let color = false
+        let cross = false
+
+        if(strArr[Obj.width * i + k] !== '0') {
+          if(strArr[Obj.width * i + k] === '9') {
+            cross = true
+          } else {
+            color = Obj.colors.filter(el => el.id === strArr[Obj.width * i + k] * 1)[0].color
+            cross = false
+          }
+        }
+        res[i][k] = { key: (i + 1) + '-' + (k + 1), color: color, cross: cross }
+      }
+    }
+console.log(res)
+    return res;
   }
 
   function getHistory(){
@@ -75,11 +107,11 @@ function App() {
   const [top, setTop] = useState({data:Obj.top, line: 0})
   const [left, setLeft] = useState({data:Obj.left, line: 0})
   const [history, setHistory] = useState(getHistory())
-  const [cross, setCross] = useState(createArray(Obj.width, Obj.height));
+  const [cross, setCross] = useState(getArrFromString(history[history.length - 1]));
 
   const mouseDownEvent = (event, key) => {
 
-    const but = event.button
+  const but = event.button
     setCross(cross.map(row => {
       return row.map(el => {
         if (el.key === key) {
@@ -160,13 +192,13 @@ function App() {
   }
 
   const mouseUpEvent = () => {
-    //setHistory([...history, cross])
+    setHistory([...history, getString(cross)])
     setButton([false, false])
   }
 
   const mouseLeaveEvent = () => {
     if(button[0] || button[1]){
-      //setHistory([...history, cross])
+      setHistory([...history, getString(cross)])
     }
     setButton([false, false])
 
@@ -214,21 +246,18 @@ function App() {
   }
 
   const stepBackHistory = () => {
-    // let his = history
-    // his.pop()
-    //setHistory(his)
-    //setCross(his[his.length - 1])
-    // console.log(history)
-  }
-
-  const showCrossImg2 = () => {
-    setHistory([...history, getString(cross)])
+    const his = history
+    if (history.length > 1 ) {
+      his.pop()
+      setHistory(his)
+      setCross(getArrFromString(his[his.length - 1]))
+    }
   }
 
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory, showCrossImg2 }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory }}>
       <div className="App">
-        <NonoButtons size={size} history={Obj.history} />
+        <NonoButtons size={size} history={history} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />

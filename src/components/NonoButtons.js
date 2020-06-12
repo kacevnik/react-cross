@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import { Context } from '../context';
 
 function NonoButtons({size, history}){
-    const { onSize, onClearCross, stepBackHistory, showCrossImg2 } = useContext(Context);
+    const { onSize, onClearCross, stepBackHistory } = useContext(Context);
 
     const count = history.length <= 1 ? '' : '(' + (history.length - 1) + ')'
 
@@ -24,7 +24,7 @@ function NonoButtons({size, history}){
                 <span onClick={()=>stepBackHistory()}>Отменить {count}</span>
             </div>
             <div className="nono-buttons-item">
-                <span onClick={showCrossImg2}>Сохранить</span>
+                <span>Сохранить</span>
             </div>
             <div className="nono-buttons-item">
                 <span onClick={showCrossImg}>Ответ</span>
