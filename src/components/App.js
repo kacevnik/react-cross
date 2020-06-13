@@ -89,7 +89,7 @@ function App() {
         res[i][k] = { key: (i + 1) + '-' + (k + 1), color: color, cross: cross }
       }
     }
-console.log(res)
+
     return res;
   }
 
@@ -97,6 +97,10 @@ console.log(res)
     if(Obj.history.length > 0){
       return Obj.history
     } else {
+      const his = JSON.parse(localStorage.getItem('nonograms_' + Obj.id))
+      if(his.length > 1) {
+        return his
+      }
       return [getString(createArray(Obj.width, Obj.height))]
     }
   }
@@ -108,6 +112,7 @@ console.log(res)
   const [left, setLeft] = useState({data:Obj.left, line: 0})
   const [history, setHistory] = useState(getHistory())
   const [cross, setCross] = useState(getArrFromString(history[history.length - 1]));
+  const [save, setSave] = useState(false)
 
   const mouseDownEvent = (event, key) => {
 
@@ -194,11 +199,13 @@ console.log(res)
   const mouseUpEvent = () => {
     setHistory([...history, getString(cross)])
     setButton([false, false])
+    setSave(false)
   }
 
   const mouseLeaveEvent = () => {
     if(button[0] || button[1]){
       setHistory([...history, getString(cross)])
+      setSave(false)
     }
     setButton([false, false])
 
@@ -245,6 +252,7 @@ console.log(res)
     if(history.length > 1) {
       setHistory([...history, getString(createArray(Obj.width, Obj.height))])
       setCross(createArray(Obj.width, Obj.height))
+      setSave(false)
     }
   }
 
@@ -257,10 +265,15 @@ console.log(res)
     }
   }
 
+  const saveCross = () => {
+    localStorage.setItem('nonograms_' + Obj.id, JSON.stringify(history))
+    setSave(true)
+  }
+
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory, saveCross }}>
       <div className="App">
-        <NonoButtons size={size} history={history} />
+        <NonoButtons size={size} history={history} save={save} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />
