@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import md5 from 'md5'
 import { Context } from '../context';
 import CrossArea from './CrossArea';
@@ -97,11 +97,19 @@ function App() {
     if(Obj.history.length > 0){
       return Obj.history
     } else {
-      const his = JSON.parse(localStorage.getItem('nonograms_' + Obj.id))
+      const his = JSON.parse(localStorage.getItem('nonograms_' + Obj.id)) ? JSON.parse(localStorage.getItem('nonograms_' + Obj.id)) : []
       if(his.length > 1) {
         return his
       }
       return [getString(createArray(Obj.width, Obj.height))]
+    }
+  }
+
+  function getTimer(){
+    if(Obj.check && Obj.timer) {
+      return Obj.timer
+    } else {
+      return JSON.parse(localStorage.getItem('nonotimer_' + Obj.id)) ? JSON.parse(localStorage.getItem('nonotimer_' + Obj.id)) : 0
     }
   }
 
@@ -113,6 +121,8 @@ function App() {
   const [history, setHistory] = useState(getHistory())
   const [cross, setCross] = useState(getArrFromString(history[history.length - 1]));
   const [save, setSave] = useState(false)
+  const [stateTimer, setStateTimer] = useState(false)
+  const [timer, setTimer] = useState(getTimer())
 
   const mouseDownEvent = (event, key) => {
 
@@ -138,7 +148,16 @@ function App() {
       })
     }))
     checkAns();
+    setStateTimer(true)
   }
+
+  useEffect(() => {
+    let counter = timer >=86400 ? 0 : timer
+    if(stateTimer && !Obj.check) {
+      setTimeout(() => setTimer(counter + 1), 1000);
+      localStorage.setItem('nonotimer_' + Obj.id, counter)
+    }
+  }, [timer, stateTimer, Obj.id, Obj.check]);
 
   const mouseOverEvent = (key) => {
     if (button[0] || button[1]) {
@@ -273,7 +292,7 @@ function App() {
   return (
     <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory, saveCross }}>
       <div className="App">
-        <NonoButtons size={size} history={history} save={save} />
+        <NonoButtons size={size} history={history} save={save} timer={timer} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />

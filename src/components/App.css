@@ -164,6 +164,10 @@ body {
     opacity: 0.3;
 }
 
+.nono-buttons-wrap {
+    display: flex;
+}
+
 .nono-buttons > * {
     box-sizing: border-box;
 }
@@ -172,7 +176,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -7px 20px -7px;
-    width: 45%;
+    width: 48%;
 }
 
 .nono-buttons-item {
@@ -205,4 +209,43 @@ body {
 
 .nono-buttons-empty {
     opacity: 0.7;
+}
+
+.nono-timer span {
+    font-size: 24px;
+    margin: 0 0 0 15px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 7px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.nono-timer.hide span {
+    color: transparent;
+}
+
+.nono-timer span i {
+    position: absolute;
+    font-size: 25px;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.86);
+    top: 0;
+    left: 0;
+    color: #777676;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.nono-timer span:hover i {
+    opacity: 1;
+}
+
+.nono-timer span i:before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -13px;
 }
