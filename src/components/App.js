@@ -211,6 +211,12 @@ function App() {
 
     if (md5(string) === Obj.ans) {
       if(!check){
+        setCross(cross.map(row => {
+          return row.map(el => {
+              if(el.cross) el.cross = false
+            return el
+          })
+        }))
         //document.getElementById("nonogramsAnsShow").click();
         console.log('Кроссворд решен')
         setCheck(true);
@@ -235,15 +241,17 @@ function App() {
 
   const mouseUpEvent = () => {
     if(!check){
-      setHistory([...history, getString(cross)])
       checkAns();
+      setHistory([...history, getString(cross)])
     }
     setButton([false, false])
   }
 
   const mouseLeaveEvent = () => {
     if(button[0] || button[1]){
-      setHistory([...history, getString(cross)])
+      if(!check){
+        setHistory([...history, getString(cross)])
+      }
     }
     setButton([false, false])
 
