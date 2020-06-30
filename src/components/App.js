@@ -113,6 +113,11 @@ function App() {
     }
   }
 
+  function getCheck(){
+    if(Obj.check) return Obj.check
+    return  JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) ? JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) : false
+  }
+
   const [size, setSize] = useState(Obj.size);
   const [color, setColor] = useState(Obj.colors[0])
   const [button, setButton] = useState([false, false])
@@ -120,12 +125,11 @@ function App() {
   const [left, setLeft] = useState({data:Obj.left, line: 0})
   const [history, setHistory] = useState(getHistory())
   const [cross, setCross] = useState(getArrFromString(history[history.length - 1]));
-  const [save, setSave] = useState(false)
   const [stateTimer, setStateTimer] = useState(false)
   const [timer, setTimer] = useState(getTimer())
+  const [check, setCheck] = useState(getCheck())
 
   const mouseDownEvent = (event, key) => {
-
   const but = event.button
     setCross(cross.map(row => {
       return row.map(el => {
@@ -147,17 +151,16 @@ function App() {
         return el
       })
     }))
-    checkAns();
     setStateTimer(true)
   }
 
   useEffect(() => {
     let counter = timer >=86400 ? 0 : timer
-    if(stateTimer && !Obj.check) {
+    if(stateTimer && !check) {
       setTimeout(() => setTimer(counter + 1), 1000);
       localStorage.setItem('nonotimer_' + Obj.id, counter)
     }
-  }, [timer, stateTimer, Obj.id, Obj.check]);
+  }, [timer, stateTimer, Obj.id, check]);
 
   const mouseOverEvent = (key) => {
     if (button[0] || button[1]) {
@@ -183,7 +186,6 @@ function App() {
           return el
         })
       }))
-      checkAns();
     }
     showHintLines(key);
   }
@@ -207,24 +209,41 @@ function App() {
       }
     }
 
-    if (md5(string) === Obj.ans) console.log('Кроссворд решен');
+    if (md5(string) === Obj.ans) {
+      if(!check){
+        //document.getElementById("nonogramsAnsShow").click();
+        console.log('Кроссворд решен')
+        setCheck(true);
+      }
+    }
 
   }
+
+  useEffect(() => {
+      localStorage.setItem('nonograms_' + Obj.id, JSON.stringify(history))
+  }, [history, Obj.id])
+
+  useEffect(() => {
+      if(check){
+        localStorage.setItem('nono_' + Obj.id + '_check', JSON.stringify(true))
+      }
+  }, [check, Obj.id])
 
   const changeColor = (id) => {
     setColor(Obj.colors.filter(el => el.id === id)[0])
   }
 
   const mouseUpEvent = () => {
-    setHistory([...history, getString(cross)])
+    if(!check){
+      setHistory([...history, getString(cross)])
+      checkAns();
+    }
     setButton([false, false])
-    setSave(false)
   }
 
   const mouseLeaveEvent = () => {
     if(button[0] || button[1]){
       setHistory([...history, getString(cross)])
-      setSave(false)
     }
     setButton([false, false])
 
@@ -267,14 +286,6 @@ function App() {
     }
   }
 
-  const onClearCross = () => {
-    if(history.length > 1) {
-      setHistory([...history, getString(createArray(Obj.width, Obj.height))])
-      setCross(createArray(Obj.width, Obj.height))
-      setSave(false)
-    }
-  }
-
   const stepBackHistory = () => {
     const his = history
     if (history.length > 1 ) {
@@ -284,15 +295,10 @@ function App() {
     }
   }
 
-  const saveCross = () => {
-    localStorage.setItem('nonograms_' + Obj.id, JSON.stringify(history))
-    setSave(true)
-  }
-
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, onClearCross, stepBackHistory, saveCross }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, stepBackHistory }}>
       <div className="App">
-        <NonoButtons size={size} history={history} save={save} timer={timer} />
+        <NonoButtons size={size} history={history} timer={timer} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
         <div className="cross-row-1">
           <CrossLabel size={size} left={Obj.left[0].length} />

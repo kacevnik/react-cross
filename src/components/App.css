@@ -176,11 +176,11 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -7px 20px -7px;
-    width: 48%;
+    width: 35%;
 }
 
 .nono-buttons-item {
-    width: 33.333%;
+    width: 50%;
     padding: 0 7px;
     margin: 0 0 10px 0;
 }
@@ -216,8 +216,8 @@ body {
     margin: 0 0 0 15px;
     display: inline-block;
     border: 1px solid #ccc;
-    padding: 7px 12px;
-    border-radius: 5px;
+    padding: 14px 12px;
+    border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;

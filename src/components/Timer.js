@@ -6,7 +6,7 @@ function Timer({timer}){
         let str = ''
         let hr  = Math.floor(timer/(60*60))
         str += hr < 10 ? '0' + hr + ':' : hr + ':'
-        let min = Math.floor(timer/60)
+        let min = Math.floor(timer/60)%60
         str += min < 10 ? '0' + min + ':' : min + ':'
         let sec = timer%60
         str += sec < 10 ? '0' + sec : sec
