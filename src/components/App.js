@@ -217,9 +217,22 @@ function App() {
             return el
           })
         }))
-        //document.getElementById("nonogramsAnsShow").click();
+        document.getElementById("nonogramsAnsShow").click();
         console.log('Кроссворд решен')
         setCheck(true);
+        $.post(
+          Obj.url,
+          {
+            action: 'nonoans',
+            time: timer,
+            id: Obj.id,
+            ans: md5(string),
+            nonce: Obj.nonce,
+          },
+          function(response){
+            console.log(response)
+          }
+        )
       }
     }
 
