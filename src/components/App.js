@@ -98,7 +98,7 @@ function App() {
       return Obj.history
     } else {
       const his = JSON.parse(localStorage.getItem('nonograms_' + Obj.id)) ? JSON.parse(localStorage.getItem('nonograms_' + Obj.id)) : []
-      if(his.length > 1) {
+      if(his.length > 0) {
         return his
       }
       return [getString(createArray(Obj.width, Obj.height))]
@@ -107,7 +107,6 @@ function App() {
 
   function getTimer(){
     if(Obj.check && Obj.timer) {
-      localStorage.removeItem('nonotimer_' + Obj.id)
       return Obj.timer
     } else {
       return JSON.parse(localStorage.getItem('nonotimer_' + Obj.id)) ? JSON.parse(localStorage.getItem('nonotimer_' + Obj.id)) : 0
@@ -116,11 +115,9 @@ function App() {
 
   function getCheck(){
     if(Obj.check){
-      localStorage.removeItem('nono_' + Obj.id + '_check')
       return Obj.check
-    } else {
-      return  JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) ? JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) : false
     }
+    return  JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) ? JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) : false
   }
 
   const [size, setSize] = useState(Obj.size);
@@ -250,7 +247,7 @@ function App() {
   useEffect(() => {
       if(check){
         localStorage.setItem('nono_' + Obj.id + '_check', JSON.stringify(true))
-      }
+      } 
   }, [check, Obj.id])
 
   const changeColor = (id) => {
