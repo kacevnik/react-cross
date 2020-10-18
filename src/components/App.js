@@ -120,6 +120,14 @@ function App() {
     return  JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) ? JSON.parse(localStorage.getItem('nono_' + Obj.id + '_check')) : false
   }
 
+  function getMobile() {
+    if (window.innerWidth < 768){
+      return true
+    }
+
+    return false
+  }
+
   const [size, setSize] = useState(Obj.size);
   const [color, setColor] = useState(Obj.colors[0])
   const [button, setButton] = useState([false, false])
@@ -130,24 +138,42 @@ function App() {
   const [stateTimer, setStateTimer] = useState(false)
   const [timer, setTimer] = useState(getTimer())
   const [check, setCheck] = useState(getCheck())
+  const [mobile, setMobile] = useState(getMobile())
+
+  window.addEventListener("resize", () => {
+    setMobile(getMobile())
+  })
 
   const mouseDownEvent = (event, key) => {
   const but = event.button
     setCross(cross.map(row => {
       return row.map(el => {
         if (el.key === key) {
-          if (but === 0) {
-            if (!el.color ) {
+          if(mobile) {
+            if ( !el.color && !el.cross ) {
+              el.cross = false
               el.color = color.color
-            } else {
-              el.color = el.color !== color.color ? color.color : false
+            }else if(el.color) {
+              el.cross = true
+              el.color = false
+            }else if(el.cross){
+              el.cross = false
+              el.color = false
             }
-            el.cross = false
-            setButton([!el.color ? 'none' : 'color', false])
-          } else if (but === 2) {
-            el.cross = !el.cross
-            el.color = false
-            setButton([false, !el.cross ? 'none' : 'cross'])
+          }else {
+            if (but === 0) {
+              if (!el.color ) {
+                el.color = color.color
+              } else {
+                el.color = el.color !== color.color ? color.color : false
+              }
+              el.cross = false
+              setButton([!el.color ? 'none' : 'color', false])
+            } else if (but === 2) {
+              el.cross = !el.cross
+              el.color = false
+              setButton([false, !el.cross ? 'none' : 'cross'])
+            }
           }
         }
         return el
@@ -193,9 +219,11 @@ function App() {
   }
 
   const showHintLines = (key) => {
-    const cors = key.split('-')
-    setTop({data: top.data, line: cors[1] * 1})
-    setLeft({data: left.data, line: cors[0] * 1})
+    if(!mobile){
+      const cors = key.split('-')
+      setTop({data: top.data, line: cors[1] * 1})
+      setLeft({data: left.data, line: cors[0] * 1})
+    }
   }
 
   const checkAns = () => {
@@ -318,17 +346,19 @@ function App() {
     }
   }
 
+  const crossRow1 = size * Obj.left[0].length + Obj.left[0].length - 1 + style.width + 6;
+
   return (
     <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, stepBackHistory }}>
       <div className="App">
         <NonoButtons size={size} history={history} timer={timer} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
-        <div className="cross-row-1">
+        <div className="cross-row-1" style={{width: crossRow1}}>
           <CrossLabel size={size} left={Obj.left[0].length} />
           <CrossTop top={top} size={size} style={style} colors={Obj.colors} contrast={getCorrectTextColor} />
         </div>
 
-        <div className="cross-row-1">
+        <div className="cross-row-1" style={{width: crossRow1}}>
           <CrossLeft left={left} size={size} colors={Obj.colors} contrast={getCorrectTextColor} />
           <CrossArea size={size} cross={cross} style={style} />
         </div>

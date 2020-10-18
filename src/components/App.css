@@ -249,3 +249,28 @@ body {
     top: 50%;
     margin: -13px;
 }
+
+@media(max-width: 786px){
+    .nonograms_info__elem {
+        width: 100%!important;
+    }
+
+    .nono-buttons-wrap {
+        display: block;
+    }
+
+    .nono-buttons {
+        width: 100%;
+        margin: 0 -15px 5px 0;
+    }
+
+    .nono-timer {
+        display: flex;
+        justify-content: center;
+        margin: 0 0 15px 0;
+    }
+
+    .nono-timer span {
+        margin: 0;
+    }
+}
