@@ -278,8 +278,10 @@ function App() {
       } 
   }, [check, Obj.id])
 
-  const changeColor = (id) => {
-    setColor(Obj.colors.filter(el => el.id === id)[0])
+  const changeColor = (idColor) => {
+    if(idColor){
+      setColor(Obj.colors.filter(el => el.id === idColor)[0]);
+    }
   }
 
   const mouseUpEvent = () => {
@@ -349,7 +351,7 @@ function App() {
   const crossRow1 = size * Obj.left[0].length + Obj.left[0].length - 1 + style.width + 6;
 
   return (
-    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, stepBackHistory }}>
+    <Context.Provider value={{ mouseDownEvent, mouseOverEvent, mouseUpEvent, changeColor, mouseLeaveEvent, onSize, stepBackHistory}}>
       <div className="App">
         <NonoButtons size={size} history={history} timer={timer} />
         {Obj.colors.length > 1 ? (<SelectColors colors={Obj.colors} color={color}/>) : ''}
@@ -359,8 +361,17 @@ function App() {
         </div>
 
         <div className="cross-row-1" style={{width: crossRow1}}>
-          <CrossLeft left={left} size={size} colors={Obj.colors} contrast={getCorrectTextColor} />
-          <CrossArea size={size} cross={cross} style={style} />
+          <CrossLeft
+            left={left}
+            size={size}
+            colors={Obj.colors}
+            contrast={getCorrectTextColor}
+          />
+          <CrossArea
+            size={size}
+            cross={cross}
+            style={style}
+          />
         </div>
       </div>
     </Context.Provider>

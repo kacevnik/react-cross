@@ -1,24 +1,26 @@
-import React from 'react'
+import React, {useContext} from 'react';
+import { Context } from '../context';
 
 function CrossTop({ colors, top, size, style, contrast }) {
+
+    const { changeColor } = useContext(Context);
+
     const Style = {
         width: style.width
     }
 
-    let key = 0;
-    let keyRow = 0;
     const defaulColor = colors.length > 1 ? '#cecece' : 'transparent'
 
-    const elements = top.data.map(row => {
+    const elements = top.data.map((row, indxRow) => {
         const styleRow = {
             width: size,
         }
         return (
-            <div key={keyRow++} className="cross-top-row" style={styleRow}>
+            <div key={indxRow} className="cross-top-row" style={styleRow}>
                 {
-                    row.map(el => {
+                    row.map((el, indx) => {
                         let clx = ['cross-top-elem']
-                        if (top.line !== 0 && top.line !== keyRow) {
+                        if (top.line !== 0 && top.line !== indxRow + 1) {
                             clx.push('cross-top-elem-more')
                         }
                         let customColor = el.color ? colors.filter(c => c.id === el.color)[0].color : '#CACACA';
@@ -29,9 +31,10 @@ function CrossTop({ colors, top, size, style, contrast }) {
                             lineHeight: size + 1 + 'px',
                             backgroundColor: el.count ? customColor : defaulColor,
                             color: contrast(customColor),
+                            cursor: el.count ? 'pointer' : null
                         }
                         return (
-                            <div key={key++} className={clx.join(' ')} style={styleElem}>
+                            <div key={indx} className={clx.join(' ')} style={styleElem} onClick={() => changeColor(el.color)}>
                                 {el.count ? el.count : ''}
                             </div>
                         )

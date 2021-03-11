@@ -1,15 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react';
+import { Context } from '../context';
 
 function CrossLeft({left, size, colors, contrast}) {
-    let key = 0
-    let keyRow = 0
+
+    const { changeColor } = useContext(Context);
+
     const defaulColor = colors.length > 1 ? '#cecece' : 'transparent'
-    const elements = left.data.map(row => {
+    const elements = left.data.map((row, indRow) => {
         return(
-            <div key={keyRow++} className="cross-left-row">
-                {row.map(el => {
+            <div key={indRow} className="cross-left-row">
+                {row.map((el, indx) => {
                     let clx = ['cross-left-elem']
-                    if (left.line !== 0 && left.line !== keyRow) {
+                    if (left.line !== 0 && left.line !== indRow + 1) {
                         clx.push('cross-left-elem-more')
                     }
 
@@ -21,9 +23,10 @@ function CrossLeft({left, size, colors, contrast}) {
                         lineHeight: size + 1 + 'px',
                         backgroundColor: el.count ? customColor : defaulColor,
                         color: contrast(customColor),
+                        cursor: el.count ? 'pointer' : null
                     }
                     return(
-                        <div key={key++} className={clx.join(' ')} style={styleElem}>{el.count ? el.count : ''}</div>
+                        <div key={indx++} className={clx.join(' ')} onClick={() => changeColor(el.color)} style={styleElem}>{el.count ? el.count : ''}</div>
                     )
                 })}
             </div>
